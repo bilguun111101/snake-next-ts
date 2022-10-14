@@ -42,7 +42,7 @@ const SnakeSection = () => {
   const xAxis: Number[] = Array(column).fill(0);
   const [xMove, setXMove] = useState(1);
   const [yMove, setYMove] = useState(0);
-  const [speed, setSpeed] = useState<number | null>(200);
+  const [speed, setSpeed] = useState<number | null>(500);
   const [food, setFood] = useState(foodFirstPosition);
   const [snake, setSnake] = useState(snakeFirstPosition);
 
@@ -71,11 +71,10 @@ const SnakeSection = () => {
 
   const move = () => {
     let snakeSave = snake;
-    let snakeHeadSave = snakeSave[0];
-    snakeHeadSave[0] + xMove;
-    snakeHeadSave[1] + yMove;
+    let snakeHeadSave = [snake[0][0] + xMove, snake[0][1] + yMove];
     snakeSave.pop();
     snakeSave.unshift(snakeHeadSave);
+    setSnake(snakeSave);
   };
 
   useEffect(() => {
@@ -88,12 +87,12 @@ const SnakeSection = () => {
         <Board>
             {_.map(yAxis, (el, yIdx) => {
                 return(
-                    <Column>
+                    <Column key={yIdx}>
                         {_.map(xAxis, (el, xIdx) => {
                             const foodPosition = _.some(food, (el, idx) => (el[0] === xIdx && el[1] === yIdx));
                             const snakePosition = _.some(snake, (el, idx) => (el[0] === xIdx && el[1] === yIdx));
                             return(
-                                <Road snake={snakePosition} food={foodPosition} />
+                                <Road snake={snakePosition} food={foodPosition} key={xIdx} />
                             )
                         })}
                     </Column>

@@ -1,23 +1,19 @@
-import { useEffect } from "react";
+import { Ref, useEffect } from "react";
 import { useRef } from "react"
 
-const useGameLoop = (runningFuction: Function, speed: number | null) => {
-    const saveRunningFuction = useRef<Function | null>(null);
-    useEffect(() => {
-        saveRunningFuction.current = runningFuction;
-    }, [runningFuction])
-
-    useEffect(() => {
-        const current = () => saveRunningFuction.current();
-
-        if(speed !== null) {
-            let gameInterval = setInterval(current, speed);
-            return () => clearInterval(gameInterval);
-        }
-    }, [speed])
-  return (
-    <div>GameLoop</div>
-  )
+const useGameLoop = (runningFuction: () => void | null, speed: number | null) => {
+  const saveRunningFuction = useRef<any | Function>();
+  useEffect(() => {
+    saveRunningFuction.current = runningFuction;
+  }, [runningFuction])
+  useEffect(() => {
+    const current = () => saveRunningFuction.current();
+ 
+    if (speed !== null) {
+      let gameInterval = setInterval(current, speed);
+      return () => clearInterval(gameInterval);
+    }
+  }, [speed])
 }
 
 export default useGameLoop

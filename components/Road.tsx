@@ -8,28 +8,20 @@ interface Props {
     food?: boolean;
 }
 
-const SnakeOrWhat = styled(Box)<{ color?: string }>(({ theme, color }) => ({
+const SnakeOrWhat = styled(Box)<{ food?: boolean, snake?: boolean }>(({ theme, food, snake, }) => ({
     width: "5%",
     height: "100%",
-    backgroundColor: color,
+    // backgroundColor: color,
+    backgroundColor: food ? 'red' : snake ? 'green' : 'white',
     border: "1px solid silver",
 }))
 
 const Road: NextPage<Props> = props => {
-  const { snake, road, food } = props
-  const [color, setColor] = useState<string>("");
-  const check = () => {
-    let saveColor = "white";
-    if(food) saveColor = "red";
-    if(snake) saveColor = "green";
-    setColor(saveColor);
-  }
+  const { snake, food } = props;
   useEffect(() => {
-    check();
-    return () => check();
-  }, [snake, road, food])
+  }, [])
   return (
-    <SnakeOrWhat color={color} />
+    <SnakeOrWhat snake={snake} food={food} />
   )
 }
 
